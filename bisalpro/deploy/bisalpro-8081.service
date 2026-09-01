@@ -1,0 +1,21 @@
+[Unit]
+Description=bisalpro Telegram streamer (instance B, port 8081)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/bisalprox
+EnvironmentFile=/opt/bisalprox/.env
+ExecStart=/opt/bisalprox/venv/bin/python -m biisal
+Restart=always
+RestartSec=5
+TimeoutStartSec=120
+KillSignal=SIGINT
+TimeoutStopSec=30
+StandardOutput=append:/var/log/bisalpro/8081.log
+StandardError=append:/var/log/bisalpro/8081.log
+
+[Install]
+WantedBy=multi-user.target

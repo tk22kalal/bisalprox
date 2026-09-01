@@ -1,0 +1,23 @@
+[Unit]
+Description=bisalpro Telegram streamer (instance A, port 8080)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/bisalpro
+EnvironmentFile=/opt/bisalpro/.env
+ExecStart=/opt/bisalpro/venv/bin/python -m biisal
+Restart=always
+RestartSec=5
+# Give the app time to connect all Pyrogram clients before systemd gives up
+TimeoutStartSec=120
+# Resilience: don't kill mid-stream too aggressively on stop/restart
+KillSignal=SIGINT
+TimeoutStopSec=30
+StandardOutput=append:/var/log/bisalpro/8080.log
+StandardError=append:/var/log/bisalpro/8080.log
+
+[Install]
+WantedBy=multi-user.target
